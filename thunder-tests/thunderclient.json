@@ -1,0 +1,63 @@
+[
+  {
+    "_id": "61b88e62-1d65-496e-ae48-dabc1ab58f7d",
+    "colId": "56bed888-4cf5-4088-a8f7-4dc4d1b55661",
+    "containerId": "",
+    "name": "GET localhost:4000/api/welcome",
+    "url": "localhost:4000/api/welcome",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2023-02-05T20:36:10.252Z",
+    "modified": "2023-02-05T20:36:10.252Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "8f7bf4d9-d2ce-485f-a522-6d7c6694b06e",
+    "colId": "56bed888-4cf5-4088-a8f7-4dc4d1b55661",
+    "containerId": "",
+    "name": "GET localhost:4000/api/products",
+    "url": "localhost:4000/api/products/",
+    "method": "GET",
+    "sortNum": 20000,
+    "created": "2023-02-05T20:36:35.638Z",
+    "modified": "2023-02-05T20:36:57.897Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "731766c6-2ad5-4e42-9d17-5416f6559a37",
+    "colId": "56bed888-4cf5-4088-a8f7-4dc4d1b55661",
+    "containerId": "",
+    "name": "POST localhost:4000/api/products",
+    "url": "localhost:4000/api/products/",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2023-02-05T20:37:46.942Z",
+    "modified": "2023-02-05T21:15:53.124Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"name\": \"Ryzen 3950X\",\n  \"desciption\": \"Swift CPU\",\n  \"price\": 3995.95,\n  \"inStock\": false\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "7227d5f7-4bde-48a8-b135-554121516889",
+    "colId": "56bed888-4cf5-4088-a8f7-4dc4d1b55661",
+    "containerId": "",
+    "name": "DELETE localhost:4000/api/products",
+    "url": "localhost:4000/api/products/63e01c89034b41dafcf28b5a",
+    "method": "DELETE",
+    "sortNum": 40000,
+    "created": "2023-02-06T07:25:49.944Z",
+    "modified": "2023-02-06T07:27:52.088Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  }
+]
