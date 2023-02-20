@@ -36,12 +36,12 @@
     "method": "POST",
     "sortNum": 30000,
     "created": "2023-02-05T20:37:46.942Z",
-    "modified": "2023-02-05T21:15:53.124Z",
+    "modified": "2023-02-20T09:16:30.118Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"name\": \"Ryzen 3950X\",\n  \"desciption\": \"Swift CPU\",\n  \"price\": 3995.95,\n  \"inStock\": false\n}",
+      "raw": "{\n  \"name\": \"Ryzen 3950X\",\n  \"desciption\": \"Swift CPU\",\n  \"price\": 3995.95\n}",
       "form": []
     },
     "tests": []
@@ -51,11 +51,44 @@
     "colId": "56bed888-4cf5-4088-a8f7-4dc4d1b55661",
     "containerId": "",
     "name": "DELETE localhost:4000/api/products",
-    "url": "localhost:4000/api/products/63e01c89034b41dafcf28b5a",
+    "url": "localhost:4000/api/products/63e8110bdf14b794c181f5ab",
     "method": "DELETE",
     "sortNum": 40000,
     "created": "2023-02-06T07:25:49.944Z",
-    "modified": "2023-02-06T07:27:52.088Z",
+    "modified": "2023-02-19T18:42:41.188Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "8482e366-e808-41ac-a31a-71a2cb14e800",
+    "colId": "56bed888-4cf5-4088-a8f7-4dc4d1b55661",
+    "containerId": "",
+    "name": "PUT localhost:4000/api/products",
+    "url": "localhost:4000/api/products/63d6f54e7a1269aead4d0173",
+    "method": "PUT",
+    "sortNum": 35000,
+    "created": "2023-02-19T18:42:55.893Z",
+    "modified": "2023-02-20T08:46:29.113Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"price\": 10000.87\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "d7e27e3c-47ab-483c-ae97-2aff51df265d",
+    "colId": "56bed888-4cf5-4088-a8f7-4dc4d1b55661",
+    "containerId": "",
+    "name": "GET SPECIFIC - localhost:4000/api/products",
+    "url": "localhost:4000/api/products/63e014ef80293bec62a10c28",
+    "method": "GET",
+    "sortNum": 25000,
+    "created": "2023-02-19T20:00:35.496Z",
+    "modified": "2023-02-20T09:09:00.331Z",
     "headers": [],
     "params": [],
     "tests": []

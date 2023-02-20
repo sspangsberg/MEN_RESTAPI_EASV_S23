@@ -16,29 +16,48 @@ router.post("/", (req, res) => {
 // Read all products (get)
 router.get("/", (req, res) => {   
     product.find()
-    .then(data => { res.send(data) })
+    .then(data => { 
+        res.send(mapArray(data)) 
+    })
     .catch (err => { 
         res.status(500).send( { message: err.message } )
     })
 });
 
 //Read all products in stock (get)
-router.get("/instock", (req, res) => {   
-    product.find({ inStock: true})
-    .then(data => { res.send(data) })
+router.get("/instock/:status", (request, response) => {   
+    product.find({ inStock: request.params.status})
+    .then(data => { response.send(data) })
     .catch (err => { 
-        res.status(500).send( { message: err.message } )
+        response.status(500).send( { message: err.message } )
     })
 });
 
 //Read specific product based on id (get)
 router.get("/:id", (req, res) => {   
     product.findById(req.params.id)
-    .then(data => { res.send(data) })
+    .then(data => { res.send(mapArray(data)) })
     .catch (err => { 
         res.status(500).send( { message: err.message } )
     })
 });
+
+
+// GET products/price/lt/1000
+router.get("/price/:operator/:price",(req, res) => {
+
+    let filterExpression = { $gte: req.params.price }
+
+    if (req.params.operator == "lt") //less than
+        filterExpression = { $lte: req.params.price }
+    
+    product.find({ price: filterExpression })
+        .then(data => { res.status(200).send(mapArray(data)) })
+        .catch(err => { res.status(500).send({ message: err.message })
+    })
+});
+
+
 
 // Update specific product (put)
 router.put("/:id", (req, res) => {   
@@ -75,6 +94,27 @@ router.delete("/:id", (req, res) => {
         res.status(500).send( { message: "Error deleting product with id=" + id } )
     })
 });
+
+function mapArray(inputArray) {
+
+    // do something with inputArray
+    let outputArray = inputArray.map(element => (
+        {
+            id: element._id,
+            name: element.name,
+            //details: element.description,
+            price: element.price,
+            //inStock: element.inStock,
+
+            // add uri (HATEOAS) for this specific resource
+            uri: "/api/products/" + element._id
+        }
+    ));
+
+    return outputArray;
+}
+
+
 
 
 module.exports = router;
