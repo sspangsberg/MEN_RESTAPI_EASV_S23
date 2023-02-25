@@ -2,11 +2,19 @@ const express = require("express");
 const mongoose = require("mongoose");
 //const bodyParser = require("body-parser");
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
 
+//load configuration from .env file
 require("dotenv-flow").config();
+
+//setup Swagger
+const swaggerDocument = YAML.load('./swagger.yaml');
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // import product routes
 const productRoutes = require("./routes/product");
+const authRoutes = require("./routes/auth");
 
 app.use(express.json());
 //app.use(bodyParser.json());
@@ -17,7 +25,7 @@ app.get("/api/welcome", (req, res) => {
 })
 
 app.use("/api/products", productRoutes);
-
+app.use("/api/user", authRoutes);
 
 const PORT = process.env.PORT || 4000;
 
@@ -36,4 +44,4 @@ mongoose.connect(
 mongoose.connection.once('open', () => console.log('Connected succesfully to MongoDB'));
 
 
-module.exports = app;
+//module.exports = app;

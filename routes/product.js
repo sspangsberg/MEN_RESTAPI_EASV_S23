@@ -1,10 +1,13 @@
 const router = require("express").Router();
 const product = require("../models/product");
+const { verifyToken } = require("../validation");
+
 
 // CRUD operations
 
 // Create product (post)
-router.post("/", (req, res) => {
+router.post("/", verifyToken, (req, res) => {
+//router.post("/", (req, res) => {
     data = req.body;
     product.insertMany( data )
     .then(data => { res.send(data) })
@@ -46,15 +49,35 @@ router.get("/:id", (req, res) => {
 // GET products/price/lt/1000
 router.get("/price/:operator/:price",(req, res) => {
 
-    let filterExpression = { $gte: req.params.price }
+    const operator = req.params.operator;
+    const price = req.params.price;
 
-    if (req.params.operator == "lt") //less than
-        filterExpression = { $lte: req.params.price }
-    
-    product.find({ price: filterExpression })
-        .then(data => { res.status(200).send(mapArray(data)) })
-        .catch(err => { res.status(500).send({ message: err.message })
-    })
+    if (operator != "gt" || operator != "lt")
+        res.status(400).send({ message: "Wrong operator input" })
+    else
+    {
+        let filterExpression;
+
+        if (operator == "lt") //less than
+        {
+            filterExpression = { $lte: price }
+        }
+        else if (operator == "gt") {
+            filterExpression = { $gte: price }
+        }
+
+        product.find({ price: filterExpression })
+            .then(data => { 
+                res
+                .status(200)
+                .send(mapArray(data))
+            })
+            .catch(err => {
+                res
+                .status(500)
+                .send({ message: err.message })
+            })
+    }
 });
 
 
@@ -78,7 +101,7 @@ router.put("/:id", (req, res) => {
 });
 
 // Delete specific product (delete)
-router.delete("/:id", (req, res) => {   
+router.delete("/:id", verifyToken, (req, res) => {   
     
     const id = req.params.id;
     product.findByIdAndDelete(id)
