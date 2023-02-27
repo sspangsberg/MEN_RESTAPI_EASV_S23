@@ -83,7 +83,7 @@ router.get("/price/:operator/:price",(req, res) => {
 
 
 // Update specific product (put)
-router.put("/:id", (req, res) => {   
+router.put("/:id", verifyToken, (req, res) => {   
     
     const id = req.params.id;
     product.findByIdAndUpdate(id, req.body)
