@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:4000/api/
     description: Localhost development server
-  - url: https://men-restapi-easv-s23.onrender.com/
+  - url: https://men-restapi-easv-s23.onrender.com/api/
     description: Remote deployment
 
 
