@@ -30,7 +30,7 @@ router.get("/", (req, res) => {
 //Read all products in stock (get)
 router.get("/instock/:status", (request, response) => {   
     product.find({ inStock: request.params.status})
-    .then(data => { response.send(data) })
+    .then(data => { response.send(mapArray(data)) })
     .catch (err => { 
         response.status(500).send( { message: err.message } )
     })
@@ -39,7 +39,7 @@ router.get("/instock/:status", (request, response) => {
 //Read specific product based on id (get)
 router.get("/:id", (req, res) => {   
     product.findById(req.params.id)
-    .then(data => { res.send(mapArray(data)) })
+    .then(data => { res.send(mapData(data)) })
     .catch (err => { 
         res.status(500).send( { message: err.message } )
     })
@@ -52,7 +52,7 @@ router.get("/price/:operator/:price",(req, res) => {
     const operator = req.params.operator;
     const price = req.params.price;
 
-    if (operator != "gt" || operator != "lt")
+    if (operator != "gt" && operator != "lt")
         res.status(400).send({ message: "Wrong operator input" })
     else
     {
@@ -121,21 +121,27 @@ router.delete("/:id", verifyToken, (req, res) => {
 function mapArray(inputArray) {
 
     // do something with inputArray
-    let outputArray = inputArray.map(element => (
-        {
-            id: element._id,
-            name: element.name,
-            //details: element.description,
-            price: element.price,
-            //inStock: element.inStock,
-
-            // add uri (HATEOAS) for this specific resource
-            uri: "/api/products/" + element._id
-        }
+    let outputArray = inputArray.map(element => (        
+        mapData(element)        
     ));
 
     return outputArray;
 }
+
+function mapData(element) {
+    let outputObj = {
+        id: element._id,
+        name: element.name,
+        //details: element.description,
+        price: element.price,
+        //inStock: element.inStock,
+
+        // add uri (HATEOAS) for this specific resource
+        uri: "/api/products/" + element._id
+    }
+
+    return outputObj;
+} 
 
 
 
