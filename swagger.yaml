@@ -9,6 +9,9 @@ servers:
   - url: https://men-restapi-easv-s23.onrender.com/api/
     description: Remote deployment
 
+tags:
+  - name: Get Routes
+    description: Routes that get products
 
 
 components:
@@ -103,6 +106,8 @@ paths:
 
   /products:
     get:
+      tags:
+      - Get Routes
       summary: Retrieves a list of Products
       description: Retrieves a list of products as JSON objects.
       responses:
@@ -137,6 +142,8 @@ paths:
   
   /products/{id}:
     get:
+      tags:
+      - Get Routes
       summary: Specific Product
       description: Retrieves a specific Product based on it id.
       parameters:
@@ -204,6 +211,47 @@ paths:
               schema:
                 $ref: "#/components/schemas/Product"
 
+
+  /products/random:
+    get:
+      summary: Retrieves a random Product
+      description: Retrieves a random product as a JSON objects.
+      responses:
+        200:
+          description: A random product JSON object.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Product"
+
+  /products/{field}/{value}:
+    get:
+      summary: Retrieves a liste of product based on the search filter
+      description: Retrieves a random product as a JSON objects.
+      parameters:
+        - in: path
+          name: field
+          required: true
+          description: Selected field from the document schema
+          schema:
+            type: string
+        - in: path
+          name: value
+          required: true
+          description: Selected value from the document schema
+          schema:
+            type: string
+      responses:
+        200:
+          description: A random product JSON object.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/Product"
   
 
 
