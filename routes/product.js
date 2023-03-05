@@ -27,21 +27,13 @@ router.get("/", (req, res) => {
     })
 });
 
+
 //Read all products in stock (get)
 router.get("/instock/:status", (request, response) => {   
     product.find({ inStock: request.params.status})
     .then(data => { response.send(mapArray(data)) })
     .catch (err => { 
         response.status(500).send( { message: err.message } )
-    })
-});
-
-//Read specific product based on id (get)
-router.get("/:id", (req, res) => {   
-    product.findById(req.params.id)
-    .then(data => { res.send(mapData(data)) })
-    .catch (err => { 
-        res.status(500).send( { message: err.message } )
     })
 });
 
@@ -79,6 +71,49 @@ router.get("/price/:operator/:price",(req, res) => {
             })
     }
 });
+
+
+//Read all documents based on variable field and value
+router.get("/:field/:value", (request, response) => {   
+    
+    const field = request.params.field;
+    const value = request.params.value;
+    
+    product.find({ [field]: { $regex: request.params.value, $options:'i' } })
+    .then (data => { response.send(data) })  
+    .catch (err => { 
+        response.status(500).send( { message: err.message } )
+    })
+});
+
+
+//Read random document
+router.get("/random", (request, response) => {   
+    // Get number of all documents in collection
+    product.countDocuments({})
+    .then(count => {
+
+        // Get a random number
+        let random = Math.floor(Math.random() * count);
+        
+        // Query all documents, but skip (fetch) only one with the offset of "random"
+        product.findOne().skip(random)
+        .then(data => { response.send(data) })  
+        .catch (err => { 
+            response.status(500).send( { message: err.message } )
+        })
+    })   
+});
+
+//Read specific product based on id (get)
+router.get("/:id", (req, res) => {   
+    product.findById(req.params.id)
+    .then(data => { res.send(mapData(data)) })
+    .catch (err => { 
+        res.status(500).send( { message: err.message } )
+    })
+});
+// Test the route ordering...
 
 
 
@@ -132,9 +167,9 @@ function mapData(element) {
     let outputObj = {
         id: element._id,
         name: element.name,
-        //details: element.description,
+        description: element.description,
         price: element.price,
-        //inStock: element.inStock,
+        inStock: element.inStock,
 
         // add uri (HATEOAS) for this specific resource
         uri: "/api/products/" + element._id
