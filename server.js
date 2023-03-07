@@ -2,33 +2,24 @@ const express = require("express");
 const mongoose = require("mongoose");
 //const bodyParser = require("body-parser");
 const app = express();
-const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
+const cors = require('cors');
+const swaggerUi = require("swagger-ui-express");
+
+// import openAPI specification for our API
+const openapiSpecification = require('./docs/swagger');
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+
+
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST','PUT','DELETE']
+}));
 
 //load configuration from .env file
 require("dotenv-flow").config();
 
 
-/* // Use function
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
-*/
-
-const cors = require("cors");
-
-  // Use cors library
-app.use(cors({
-  origin: '*',
-  methods: ['GET','POST','DELETE','UPDATE','PUT']
-}));
-// Test in Chromium > Inspect > Network > Headers > Response Headers
-
-//setup Swagger
-const swaggerDocument = YAML.load('./swagger.yaml');
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // import product routes
 const productRoutes = require("./routes/product");
@@ -62,4 +53,4 @@ mongoose.connect(
 mongoose.connection.once('open', () => console.log('Connected succesfully to MongoDB'));
 
 
-//module.exports = app;
+module.exports = app;

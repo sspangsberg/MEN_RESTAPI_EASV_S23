@@ -4,8 +4,32 @@ const { verifyToken } = require("../validation");
 
 
 // CRUD operations
-
-// Create product (post)
+/**
+ * @openapi
+ * /products:
+ *   post:
+ *     tags:
+ *     - POST Routes
+ *     summary: Create a new Product
+ *     description: Create a new Product
+ *     security:
+ *       - ApiKeyAuth: []      
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Product"
+ *
+ *     responses:
+ *       201:
+ *         description: Product created succesfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Product"
+ *
+*/
 router.post("/", verifyToken, (req, res) => {
 //router.post("/", (req, res) => {
     data = req.body;
@@ -16,7 +40,23 @@ router.post("/", verifyToken, (req, res) => {
     })
 });
 
-// Read all products (get)
+/**
+ * @openapi
+ * /products:
+ *   get:
+ *     tags:
+ *     - GET Routes
+ *     description: Gets all products
+ *     responses:
+ *       200:
+ *         description: Returns an array of all products.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Product"
+*/
 router.get("/", (req, res) => {   
     product.find()
     .then(data => { 
@@ -27,13 +67,106 @@ router.get("/", (req, res) => {
     })
 });
 
-
-//Read all products in stock (get)
 router.get("/instock/:status", (request, response) => {   
     product.find({ inStock: request.params.status})
-    .then(data => { response.send(mapArray(data)) })
+    .then(data => { response.send(data) })
     .catch (err => { 
         response.status(500).send( { message: err.message } )
+    })
+});
+
+
+/**
+ * This is a non openapi comment....
+ * 
+ * @openapi
+ * /products/random:
+ *   get:
+ *     tags:
+ *     - GET Routes
+ *     summary: Random Product
+ *     description: Retrieves a random Product.
+ *     responses:
+ *       200:
+ *         description: A random Product in the format of a JSON object.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               items:
+ *                 $ref: "#/components/schemas/Product"
+*/
+router.get("/random", (request, response) => {
+    
+    // get a random product
+    product.countDocuments({})
+    .then (count => {
+
+        // Get a random number
+        let random = Math.floor(Math.random() * (count - 1));
+
+        // Query all documents, but skip (fetch) only one with the ofset of "random"
+        product.findOne().skip(random)
+        .then (data => { response.status(200).send(mapData(data))})
+        .catch(err => {
+            response.status(500).send({ message: err.message});
+        })
+    })
+});
+
+
+//Read all documents based on variable field and value
+router.get("/:field/:value", (request, response) => {   
+    
+    const field = request.params.field;
+    const value = request.params.value;
+    
+    product.find(
+        { 
+            [field]: 
+            { 
+                $regex: 
+                request.params.value, $options:'i' 
+            } 
+        })
+
+    .then (data => { response.send(data) })  
+    .catch (err => { 
+        response.status(500).send( { message: err.message } )
+    })
+});
+
+
+/**
+ * @openapi
+ * /products/{id}:
+ *   get:
+ *     tags:
+ *     - GET Routes
+ *     summary: Specific Product
+ *     description: Retrieves a specific Product based on it id.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB id
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A Product in the format of a JSON object.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Product"
+*/
+router.get("/:id", (req, res) => {   
+    product.findById(req.params.id)
+    .then(data => { res.send(mapData(data)) })
+    .catch (err => { 
+        res.status(500).send( { message: err.message } )
     })
 });
 
@@ -44,7 +177,7 @@ router.get("/price/:operator/:price",(req, res) => {
     const operator = req.params.operator;
     const price = req.params.price;
 
-    if (operator != "gt" && operator != "lt")
+    if (operator != "gt" || operator != "lt")
         res.status(400).send({ message: "Wrong operator input" })
     else
     {
@@ -71,49 +204,6 @@ router.get("/price/:operator/:price",(req, res) => {
             })
     }
 });
-
-
-//Read all documents based on variable field and value
-router.get("/:field/:value", (request, response) => {   
-    
-    const field = request.params.field;
-    const value = request.params.value;
-    
-    product.find({ [field]: { $regex: request.params.value, $options:'i' } })
-    .then (data => { response.send(data) })  
-    .catch (err => { 
-        response.status(500).send( { message: err.message } )
-    })
-});
-
-
-//Read random document
-router.get("/random", (request, response) => {   
-    // Get number of all documents in collection
-    product.countDocuments({})
-    .then(count => {
-
-        // Get a random number
-        let random = Math.floor(Math.random() * count);
-        
-        // Query all documents, but skip (fetch) only one with the offset of "random"
-        product.findOne().skip(random)
-        .then(data => { response.send(data) })  
-        .catch (err => { 
-            response.status(500).send( { message: err.message } )
-        })
-    })   
-});
-
-//Read specific product based on id (get)
-router.get("/:id", (req, res) => {   
-    product.findById(req.params.id)
-    .then(data => { res.send(mapData(data)) })
-    .catch (err => { 
-        res.status(500).send( { message: err.message } )
-    })
-});
-// Test the route ordering...
 
 
 
@@ -156,18 +246,22 @@ router.delete("/:id", verifyToken, (req, res) => {
 function mapArray(inputArray) {
 
     // do something with inputArray
-    let outputArray = inputArray.map(element => (        
-        mapData(element)        
+    let outputArray = inputArray.map(element => (
+            mapData(element)
     ));
 
     return outputArray;
 }
 
+
 function mapData(element) {
+
+    // do something with inputArray
     let outputObj = {
+
         id: element._id,
         name: element.name,
-        description: element.description,
+        //details: element.description,
         price: element.price,
         inStock: element.inStock,
 
@@ -176,7 +270,8 @@ function mapData(element) {
     }
 
     return outputObj;
-} 
+}
+
 
 
 

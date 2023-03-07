@@ -1,23 +1,15 @@
 const mongoose = require("mongoose");
-const categorySchema = require("./category");
+
 const Schema = mongoose.Schema;
 
-let productSchema = new Schema(
-
+let categorySchema = new Schema(
     {
         name: {type: String, required: true},
-        description: {type:String, required: false},
-        price: {type: Number, required: true},
-        //category: [Category],
-        inStock: {type: Boolean, required: true}
+        description: {type:String, required: false}
     }
-    //name: string
-    //description: string
-    //price: number
-    //inStock: boolean  
 );
 
-productSchema.pre('findOneAndUpdate', function() {
+categorySchema.pre('findOneAndUpdate', function() {
     const update = this.getUpdate();
     if (update.__v != null) {
       delete update.__v;
@@ -37,4 +29,4 @@ productSchema.pre('findOneAndUpdate', function() {
 
 
 
-module.exports = mongoose.model("product", productSchema);
+module.exports = mongoose.model("category", categorySchema);
