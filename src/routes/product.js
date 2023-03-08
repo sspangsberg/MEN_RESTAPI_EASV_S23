@@ -57,7 +57,12 @@ router.post("/", verifyToken, (req, res) => {
  *               items:
  *                 $ref: "#/components/schemas/Product"
 */
-router.get("/", (req, res) => {   
+
+
+router.get("/products", (req, res) => {   
+    // #swagger.tags = ['GET Routes']
+    // #swagger.description = 'Gets all products'
+    
     product.find()
     .then(data => { 
         res.send(mapArray(data)) 
@@ -96,8 +101,11 @@ router.get("/instock/:status", (request, response) => {
  *               items:
  *                 $ref: "#/components/schemas/Product"
 */
-router.get("/random", (request, response) => {
-    
+
+router.get("/products/random", (request, response) => {    
+    // #swagger.tags = ['GET Routes']
+    // #swagger.description = 'Get a random product'
+
     // get a random product
     product.countDocuments({})
     .then (count => {
@@ -116,8 +124,10 @@ router.get("/random", (request, response) => {
 
 
 //Read all documents based on variable field and value
-router.get("/:field/:value", (request, response) => {   
-    
+router.get("/products/:field/:value", (request, response) => {   
+    // #swagger.tags = ['GET Routes']
+    // #swagger.description = 'Dynamic searcher based on string property fields'
+
     const field = request.params.field;
     const value = request.params.value;
     
@@ -162,7 +172,7 @@ router.get("/:field/:value", (request, response) => {
  *               items:
  *                 $ref: "#/components/schemas/Product"
 */
-router.get("/:id", (req, res) => {   
+router.get("/products/:id", (req, res) => {   
     product.findById(req.params.id)
     .then(data => { res.send(mapData(data)) })
     .catch (err => { 
@@ -172,7 +182,7 @@ router.get("/:id", (req, res) => {
 
 
 // GET products/price/lt/1000
-router.get("/price/:operator/:price",(req, res) => {
+router.get("/products/price/:operator/:price",(req, res) => {
 
     const operator = req.params.operator;
     const price = req.params.price;
@@ -208,7 +218,7 @@ router.get("/price/:operator/:price",(req, res) => {
 
 
 // Update specific product (put)
-router.put("/:id", verifyToken, (req, res) => {   
+router.put("/products/:id", verifyToken, (req, res) => {   
     
     const id = req.params.id;
     product.findByIdAndUpdate(id, req.body)
@@ -226,7 +236,7 @@ router.put("/:id", verifyToken, (req, res) => {
 });
 
 // Delete specific product (delete)
-router.delete("/:id", verifyToken, (req, res) => {   
+router.delete("/products/:id", verifyToken, (req, res) => {   
     
     const id = req.params.id;
     product.findByIdAndDelete(id)

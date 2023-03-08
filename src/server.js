@@ -5,10 +5,13 @@ const app = express();
 const YAML = require('yamljs');
 const cors = require('cors');
 const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require('./docs/swagger-output.json');
 
 // import openAPI specification for our API
-const openapiSpecification = require('./docs/swagger');
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+//const openapiSpecification = require('./docs/swagger');
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+
 
 
 app.use(cors({
@@ -33,7 +36,7 @@ app.get("/api/welcome", (req, res) => {
     res.status(200).send({message: "Welcome to the MEN REST-API"});
 })
 
-app.use("/api/products", productRoutes);
+app.use("/api", productRoutes);
 app.use("/api/user", authRoutes);
 
 const PORT = process.env.PORT || 4000;

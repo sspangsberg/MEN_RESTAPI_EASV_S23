@@ -4,8 +4,14 @@
   "description": "Mongo-Express-Node REST-API made during EASV PBA-WD Spring 2023",
   "main": "server.js",
   "scripts": {
-    "start-dev": "cross-env NODE_ENV=development nodemon server.js",
+    "start-dev": "cross-env NODE_ENV=development nodemon src/server.js",
+    "start-gendoc": "cross-env NODE_ENV=development nodemon src/docs/swaggerGen.js",
     "test": "cross-env NODE_ENV=test mocha --exit"
+  },
+  "nodemonConfig": {
+    "ignore": ["swagger-output.json"],
+    "watch": ["src/",".env",".env.development","*.json"],
+    "ext": "*"
   },
   "keywords": [
     "mongodb",
@@ -26,6 +32,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^4.3.1",
     "mongoose": "^6.1.7",
+    "swagger-autogen": "^2.23.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.1",
     "yamljs": "^0.3.0"
