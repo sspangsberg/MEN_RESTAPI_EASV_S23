@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 //registration
 
 
-router.post("/register", async (req, res) => {
+router.post("/user/register", async (req, res) => {
     //code
     
     //validate the user input
@@ -44,7 +44,7 @@ router.post("/register", async (req, res) => {
     }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/user/login", async (req, res) => {
 
     //validate user login info
     const { error } = loginValidation(req.body);

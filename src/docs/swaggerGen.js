@@ -40,7 +40,7 @@ const doc = {
             id: { type: "string" },
             name: { type: "string" },
             description: { type: "string" },
-            price: { type: "string" },
+            price: { type: "number" },
             inStock: { type: "boolean" }
           }
         }
