@@ -62,4 +62,4 @@ mongoose.connect(
 mongoose.connection.once('open', () => console.log('Connected succesfully to MongoDB'));
 
 
-//module.exports = app;
+module.exports = app;

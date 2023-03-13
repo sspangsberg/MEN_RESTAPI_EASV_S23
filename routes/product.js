@@ -10,7 +10,7 @@ router.post("/", verifyToken, (req, res) => {
 //router.post("/", (req, res) => {
     data = req.body;
     product.insertMany( data )
-    .then(data => { res.send(data) })
+    .then(data => { res.status(201).send(data) })
     .catch (err => { 
         res.status(500).send( { message: err.message } )
     })
