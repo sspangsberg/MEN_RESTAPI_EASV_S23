@@ -42,8 +42,9 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
 
-    steps:      
-      uses: johnbeynon/render-deploy-action
-      with:
-	      service-id: ${{ secrets.SERVICE_ID }}
-	      api-key: ${{ secrets.RENDER_API_KEY }}
+    steps: 
+      - name: Deploy to Render     
+        uses: johnbeynon/render-deploy-action
+        with:
+	        service-id: ${{ secrets.SERVICE_ID }}
+	        api-key: ${{ secrets.RENDER_API_KEY }}
