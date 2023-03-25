@@ -43,8 +43,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps: 
-      - name: Deploy to Render     
-        uses: johnbeynon/render-deploy-action
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-	        service-id: ${{ secrets.SERVICE_ID }}
-	        api-key: ${{ secrets.RENDER_API_KEY }}
+	  service-id: ${{ secrets.SERVICE_ID }}
+	  api-key: ${{ secrets.RENDER_API_KEY }}
