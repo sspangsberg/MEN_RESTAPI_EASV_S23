@@ -70,7 +70,7 @@ describe('Product workflow tests', () => {
 
                                 // 4) Verify one product in test DB
                                 chai.request(server)
-                                    .get('/api/products')
+                                    .get('/api/products/' + res.body._id)
                                     .end((err, res) => {
                                         
                                         // Asserts

@@ -38,7 +38,7 @@ app.use(express.json());
 //app.use(bodyParser.json());
 
 //routes
-app.get("/api/welcome", (req, res) => {
+app.get("/api/", (req, res) => {
     res.status(200).send({message: "Welcome to the MEN REST-API"});
 })
 
