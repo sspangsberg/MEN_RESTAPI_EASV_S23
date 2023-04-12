@@ -145,7 +145,7 @@ router.delete("/:id", verifyToken, (req, res) => {
             res.status(404).send({message: "Cannot delete product with id=" + id + ". Maybe the product was not found!"});
         }
         else {
-            res.send({ message: "Product was successfully deleted - fire!"});
+            res.send({ message: "Product was successfully deleted."});
         }
     })
     .catch (err => { 
