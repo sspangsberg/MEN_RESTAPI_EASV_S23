@@ -30,8 +30,8 @@ router.post("/register", async (req, res) => {
     const password = await bcrypt.hash(req.body.password, salt);
 
 
-    console.log("Salt:" + salt);
-    console.log("Password:" + password);
+    //console.log("Salt:" + salt);
+    //console.log("Password:" + password);
 
     //create a user object and save in the DB
     const userObject = new user({
