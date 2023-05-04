@@ -104,6 +104,36 @@ paths:
                     type: string
 
 
+  /user/refresh:
+    post:
+      summary: Refresh the token when expired
+      description: When the access token is expired, the front-end can run this route to refresh and get a new access token (auth-token)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                refreshToken:
+                  type: string
+      
+      responses:
+        200:
+          description: Access token refreshed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  accessToken:
+                    type: string
+
+
   /products:
     get:
       tags:
