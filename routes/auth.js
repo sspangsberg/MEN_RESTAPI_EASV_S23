@@ -109,6 +109,8 @@ router.post("/login", async (req, res) => {
         error: null,
         data: { accessToken, refreshToken }
     });
+
+    res.send({ message: "Extra data."});
 });
 
 router.post("/refresh", (req, res) => {
